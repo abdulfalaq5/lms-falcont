@@ -48,8 +48,8 @@ docker compose -f docker-compose.full.yml up -d --build
 docker exec lms_backend npm run seed:run:prod   # sekali saja, setelah container pertama kali jalan
 ```
 
-- Frontend: `http://localhost:3010`
-- Backend: `http://localhost:3001` (docs di `/api/docs`)
+- Frontend: `http://localhost:9578`
+- Backend: `http://localhost:9577` (docs di `http://localhost:9577/api/docs`)
 - Postgres: `localhost:5434` (volume terpisah dari mode native, `lms_pg_data_full`)
 
 Migration jalan otomatis setiap container backend start (idempotent). Seeder **tidak** dijalankan otomatis karena akan menghapus data yang sudah ada — jalankan manual sekali via perintah di atas.

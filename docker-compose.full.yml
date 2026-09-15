@@ -60,9 +60,9 @@ services:
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
       SMTP_FROM: no-reply@lms.local
-      FRONTEND_URL: http://localhost:3000
+      FRONTEND_URL: http://localhost:9578
     ports:
-      - "3001:3001"
+      - "9577:3001"
     volumes:
       - lms_uploads:/app/uploads
 
@@ -71,13 +71,13 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:3001
+        NEXT_PUBLIC_API_URL: http://localhost:9577
     container_name: lms_frontend
     restart: unless-stopped
     depends_on:
       - backend
     ports:
-      - "3010:3000"
+      - "9578:3000"
 
 volumes:
   lms_pg_data_full:
