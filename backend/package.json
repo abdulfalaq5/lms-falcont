@@ -20,7 +20,9 @@
     "migrate:make": "knex migrate:make --knexfile src/database/knexfile.ts",
     "migrate:latest": "knex migrate:latest --knexfile src/database/knexfile.ts",
     "migrate:rollback": "knex migrate:rollback --knexfile src/database/knexfile.ts",
-    "seed:run": "knex seed:run --knexfile src/database/knexfile.ts"
+    "seed:run": "knex seed:run --knexfile src/database/knexfile.ts",
+    "migrate:latest:prod": "knex migrate:latest --knexfile dist/database/knexfile.js",
+    "seed:run:prod": "knex seed:run --knexfile dist/database/knexfile.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

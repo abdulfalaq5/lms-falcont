@@ -39,6 +39,23 @@ lms-project/
    ```
    Frontend jalan di `http://localhost:3000` (atau port lain jika 3000 terpakai).
 
+## Menjalankan (mode: full Docker — backend & frontend juga di container)
+
+Cocok untuk deployment/staging. Jika stack mode "komponen saja" (di atas) sedang jalan, matikan dulu (`docker compose down`) karena keduanya memakai port pgAdmin/Mailhog yang sama.
+
+```
+docker compose -f docker-compose.full.yml up -d --build
+docker exec lms_backend npm run seed:run:prod   # sekali saja, setelah container pertama kali jalan
+```
+
+- Frontend: `http://localhost:3010`
+- Backend: `http://localhost:3001` (docs di `/api/docs`)
+- Postgres: `localhost:5434` (volume terpisah dari mode native, `lms_pg_data_full`)
+
+Migration jalan otomatis setiap container backend start (idempotent). Seeder **tidak** dijalankan otomatis karena akan menghapus data yang sudah ada — jalankan manual sekali via perintah di atas.
+
+Untuk kembali ke mode "komponen saja": `docker compose -f docker-compose.full.yml down` lalu `docker compose up -d`.
+
 ## Akun dummy (dari seeder)
 
 Semua akun pakai password `Password123!`.

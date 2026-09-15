@@ -93,8 +93,8 @@ Diturunkan dari [LMS_SPEC.md](LMS_SPEC.md), diurutkan mengikuti §10 (Urutan Pen
 
 ## 12. Docker & Deployment
 - [x] Test mode "dengan Docker" (postgres+pgadmin+mailhog di container, app native) — §12.4, sudah diverifikasi migrate+seed+login berhasil
-- [ ] Test mode "tanpa Docker" (native, postgres lokal) — §12.3, belum diverifikasi eksplisit
-- [ ] (Opsional) `docker-compose.full.yml` + Dockerfile backend/frontend utk mode full Docker — §12.5, belum dibuat
+- [x] `docker-compose.full.yml` + Dockerfile backend/frontend utk mode full Docker — §12.5, sudah dibuat dan diverifikasi end-to-end (build image, migrate otomatis saat start, seed manual, login via backend container, halaman frontend termuat dari container). Volume Postgres dipisah (`lms_pg_data_full`, port 5434) dari mode native supaya tidak bentrok.
+- [ ] Test mode "tanpa Docker" (native, postgres lokal tanpa Docker sama sekali) — §12.3, belum diverifikasi eksplisit (mesin dev ini pakai Postgres native yang sudah terpakai untuk keperluan lain di port 5432)
 
 ## 13. QA & Hardening
 - [x] Endpoint dilindungi role-based guard (`JwtAuthGuard` + `RolesGuard` + `@Roles`) sesuai matriks §3
