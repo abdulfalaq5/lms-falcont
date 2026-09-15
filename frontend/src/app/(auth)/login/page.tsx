@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth, ROLE_HOME } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { Input, Label } from "@/components/ui/input";
+import { Input, Label, PasswordInput } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 
 export default function LoginPage() {
@@ -51,9 +51,8 @@ export default function LoginPage() {
           </div>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="password">Kata Sandi</Label>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
