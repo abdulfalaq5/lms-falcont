@@ -29,11 +29,11 @@ export const STATUS_STYLES: Record<string, StatusStyle> = {
 
   "attendance:hadir": { bg: "#DCFCE7", text: "#15803D", label: "Hadir" },
   "attendance:izin": { bg: "#FEF0C7", text: "#B54708", label: "Izin" },
-  "attendance:alpha": { bg: "#FEE4E2", text: "#D92D20", label: "Alpha" },
+  "attendance:alpha": { bg: "#FEE4E2", text: "#B42318", label: "Alpha" },
 
   "user:active": { bg: "#DCFCE7", text: "#15803D", label: "Aktif" },
-  "user:inactive": { bg: "#FEE4E2", text: "#D92D20", label: "Nonaktif" },
-  "user:suspended": { bg: "#FEE4E2", text: "#D92D20", label: "Nonaktif" },
+  "user:inactive": { bg: "#FEE4E2", text: "#B42318", label: "Nonaktif" },
+  "user:suspended": { bg: "#FEE4E2", text: "#B42318", label: "Nonaktif" },
 
   "schedule:session": { bg: "#E7F0FE", text: "#0857D6", label: "Sesi" },
   "schedule:deadline": { bg: "#FEF0C7", text: "#B54708", label: "Tenggat" },
