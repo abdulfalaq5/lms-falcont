@@ -85,7 +85,9 @@ export default function CoursesCatalogPage() {
                   {course.is_open_enrollment ? "Pendaftaran Terbuka" : "Perlu Persetujuan"}
                 </Badge>
               </div>
-              <h2 className="font-heading text-lg text-foreground">{course.title}</h2>
+              <Link href={`/courses/${course.id}`}>
+                <h2 className="font-heading text-lg text-foreground hover:text-primary">{course.title}</h2>
+              </Link>
               <p className="line-clamp-3 text-sm text-muted-foreground">{course.description}</p>
               <p className="text-xs text-muted-foreground">Pengajar: {course.instructor_name ?? "-"}</p>
               <p className="text-sm font-medium text-primary">
