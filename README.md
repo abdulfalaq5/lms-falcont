@@ -22,17 +22,21 @@ Ada 3 cara menjalankan project ini, pilih salah satu:
 Gunakan mode ini jika Postgres (dan SMTP server, opsional) sudah tersedia/terpasang sendiri di luar Docker.
 
 1. Siapkan database Postgres secara manual (lewat `psql`, TablePlus, dsb), sesuaikan dengan kredensial yang akan dipakai di `.env`, misalnya:
+
    ```sql
    CREATE USER lms_user WITH PASSWORD 'lms_password';
    CREATE DATABASE lms_db OWNER lms_user;
    ```
 
 2. Setup backend:
+
    ```
    cd backend
    cp .env.example .env
    ```
+
    Edit `backend/.env` sesuai environment kamu, minimal:
+
    ```
    DB_HOST=localhost
    DB_PORT=5432              # sesuaikan dengan port Postgres native kamu
@@ -45,24 +49,37 @@ Gunakan mode ini jika Postgres (dan SMTP server, opsional) sudah tersedia/terpas
    SMTP_USER=                # isi jika provider butuh autentikasi
    SMTP_PASSWORD=
    ```
+
    > Jika belum punya SMTP server sendiri, email (reset password, dsb) tidak akan terkirim tapi aplikasi tetap jalan normal — cukup abaikan bagian SMTP untuk development.
 
    Contoh pakai provider pihak ketiga seperti [Mailtrap](https://mailtrap.io) (sandbox, untuk testing email tanpa mengirim ke penerima asli):
+
    ```
    SMTP_HOST=sandbox.smtp.mailtrap.io
    SMTP_PORT=2525
    SMTP_USER=<username_mailtrap>
    SMTP_PASSWORD=<password_mailtrap>
    ```
+
    Provider SMTP lain (Gmail, SendGrid, Amazon SES, dll) juga bisa dipakai dengan pola yang sama — cukup sesuaikan `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, dan `SMTP_PASSWORD` sesuai kredensial dari provider tersebut.
 
    Lalu jalankan:
+
    ```
    npm install
    npm run migrate:latest
    npm run seed:run
+   npm run build
    npm run start:dev
+   npm run start:prod untuk prod
+
+
+
+   rm tsconfig.build.tsbuildinfo
+   npm run start:dev
+
    ```
+
    Backend jalan di `http://localhost:3001`, dokumentasi API di `http://localhost:3001/api/docs`.
 
 3. Setup frontend:
@@ -77,12 +94,15 @@ Gunakan mode ini jika Postgres (dan SMTP server, opsional) sudah tersedia/terpas
 ## Mode 2: Komponen di Docker, app native
 
 1. Jalankan komponen pendukung:
+
    ```
    docker compose up -d
    ```
+
    > Catatan: Postgres di-mapping ke port **5433** (bukan 5432 default) karena mesin dev ini sudah punya Postgres native di 5432. Jika di mesin lain tidak ada konflik, boleh diubah kembali ke `5432:5432` di `docker-compose.yml` dan `.env`.
 
 2. Setup backend:
+
    ```
    cd backend
    cp .env.example .env
@@ -91,6 +111,7 @@ Gunakan mode ini jika Postgres (dan SMTP server, opsional) sudah tersedia/terpas
    npm run seed:run
    npm run start:dev
    ```
+
    Backend jalan di `http://localhost:3001`, dokumentasi API di `http://localhost:3001/api/docs`.
 
 3. Setup frontend:
@@ -123,12 +144,12 @@ Untuk kembali ke mode "komponen saja": `docker compose -f docker-compose.full.ym
 
 Semua akun pakai password `Password123!`.
 
-| Role | Email |
-|---|---|
-| Super Admin | superadmin@lms.local |
-| Admin | admin@lms.local |
-| Instruktur | instruktur1@lms.local, instruktur2@lms.local |
-| User | user1@lms.local, user2@lms.local, user3@lms.local |
+| Role        | Email                                             |
+| ----------- | ------------------------------------------------- |
+| Super Admin | superadmin@lms.local                              |
+| Admin       | admin@lms.local                                   |
+| Instruktur  | instruktur1@lms.local, instruktur2@lms.local      |
+| User        | user1@lms.local, user2@lms.local, user3@lms.local |
 
 ## Status
 
