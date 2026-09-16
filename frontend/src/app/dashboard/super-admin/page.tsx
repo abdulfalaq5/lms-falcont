@@ -1,8 +1,9 @@
 "use client";
 
 import { Topbar } from "@/components/layout/topbar";
-import { StatCard } from "@/components/ui/card";
-import { EmptyState } from "@/components/ui/empty-state";
+import { StatCard } from "@/components/patterns/stat-card";
+import { EmptyState } from "@/components/patterns/empty-state";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { useApi } from "@/lib/use-api";
 
 interface SuperAdminDashboard {
@@ -26,38 +27,38 @@ export default function SuperAdminDashboardPage() {
       <Topbar title="Ringkasan Sistem" subtitle="Pantauan menyeluruh seluruh platform LMS." />
       <div className="flex flex-1 flex-col gap-6 p-6">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Total Pengguna" value={data?.totalUsers ?? (loading ? "…" : 0)} accent="terracotta" />
-          <StatCard label="Kelas Aktif" value={data?.activeCourses ?? (loading ? "…" : 0)} accent="teal" />
+          <StatCard label="Total Pengguna" value={data?.totalUsers ?? (loading ? "…" : 0)} />
+          <StatCard label="Kelas Aktif" value={data?.activeCourses ?? (loading ? "…" : 0)} />
         </div>
 
         <div>
-          <h2 className="font-heading text-lg text-ink">Log Aktivitas Terbaru</h2>
-          <div className="mt-3 overflow-x-auto rounded-2xl border border-line bg-surface">
+          <h2 className="font-heading text-lg text-foreground">Log Aktivitas Terbaru</h2>
+          <div className="mt-3 overflow-x-auto rounded-xl border border-border bg-card shadow-card">
             {loading ? (
-              <p className="p-6 text-sm text-ink-soft">Memuat aktivitas...</p>
+              <p className="p-6 text-sm text-muted-foreground">Memuat aktivitas...</p>
             ) : data && data.recentActivity.length > 0 ? (
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-line text-ink-soft">
-                  <tr>
-                    <th className="px-4 py-3 font-medium">Waktu</th>
-                    <th className="px-4 py-3 font-medium">Pengguna</th>
-                    <th className="px-4 py-3 font-medium">Aksi</th>
-                    <th className="px-4 py-3 font-medium">Entitas</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Waktu</TableHead>
+                    <TableHead>Pengguna</TableHead>
+                    <TableHead>Aksi</TableHead>
+                    <TableHead>Entitas</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {data.recentActivity.map((log) => (
-                    <tr key={log.id} className="border-b border-line last:border-0">
-                      <td className="px-4 py-3 text-ink-soft">
+                    <TableRow key={log.id}>
+                      <TableCell className="text-muted-foreground">
                         {new Date(log.created_at).toLocaleString("id-ID")}
-                      </td>
-                      <td className="px-4 py-3">{log.user_name ?? "Sistem"}</td>
-                      <td className="px-4 py-3 capitalize">{log.action}</td>
-                      <td className="px-4 py-3 capitalize">{log.entity}</td>
-                    </tr>
+                      </TableCell>
+                      <TableCell>{log.user_name ?? "Sistem"}</TableCell>
+                      <TableCell className="capitalize">{log.action}</TableCell>
+                      <TableCell className="capitalize">{log.entity}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             ) : (
               <EmptyState title="Belum ada aktivitas" description="Aktivitas sistem akan muncul di sini." />
             )}

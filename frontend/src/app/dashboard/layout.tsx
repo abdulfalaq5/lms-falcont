@@ -15,7 +15,7 @@ export default function DashboardLayout({ children }: LayoutProps<"/dashboard">)
 
   if (loading || !user) {
     return (
-      <div className="flex flex-1 items-center justify-center text-ink-soft">
+      <div className="flex flex-1 items-center justify-center text-muted-foreground">
         Memuat...
       </div>
     );

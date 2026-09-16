@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { useAuth, ROLE_HOME } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { Input, Label, PasswordInput } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/patterns/password-input";
 import { Card } from "@/components/ui/card";
 
 export default function RegisterPage() {
@@ -18,7 +20,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
@@ -34,9 +36,9 @@ export default function RegisterPage() {
 
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-12">
-      <Card className="w-full max-w-sm">
-        <h1 className="font-heading text-2xl text-ink">Buat Akun Peserta</h1>
-        <p className="mt-1 text-sm text-ink-soft">Daftar untuk mulai menjelajahi kelas.</p>
+      <Card className="w-full max-w-sm px-6">
+        <h1 className="font-heading text-2xl text-foreground">Buat Akun Peserta</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Daftar untuk mulai menjelajahi kelas.</p>
 
         <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
@@ -66,16 +68,16 @@ export default function RegisterPage() {
             />
           </div>
 
-          {error && <p className="text-sm text-red-700">{error}</p>}
+          {error && <p className="text-sm text-destructive">{error}</p>}
 
-          <Button type="submit" disabled={submitting} className="mt-2 w-full">
+          <Button type="submit" disabled={submitting} size="lg" className="mt-2 w-full">
             {submitting ? "Memproses..." : "Daftar"}
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-ink-soft">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           Sudah punya akun?{" "}
-          <Link href="/login" className="text-terracotta hover:underline">
+          <Link href="/login" className="text-primary hover:underline">
             Masuk di sini
           </Link>
         </p>

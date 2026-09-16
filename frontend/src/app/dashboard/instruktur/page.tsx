@@ -1,8 +1,9 @@
 "use client";
 
 import { Topbar } from "@/components/layout/topbar";
-import { Card, StatCard } from "@/components/ui/card";
-import { EmptyState } from "@/components/ui/empty-state";
+import { Card } from "@/components/ui/card";
+import { StatCard } from "@/components/patterns/stat-card";
+import { EmptyState } from "@/components/patterns/empty-state";
 import { useApi } from "@/lib/use-api";
 
 interface InstrukturDashboard {
@@ -20,26 +21,25 @@ export default function InstrukturDashboardPage() {
       <Topbar title="Ringkasan Mengajar" subtitle="Progress kelas yang kamu ampu." />
       <div className="flex flex-1 flex-col gap-6 p-6">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <StatCard label="Kelas Diampu" value={data?.coursesCount ?? (loading ? "…" : 0)} accent="teal" />
+          <StatCard label="Kelas Diampu" value={data?.coursesCount ?? (loading ? "…" : 0)} />
           <StatCard
             label="Tugas Belum Dinilai"
             value={data?.ungradedAssignments ?? (loading ? "…" : 0)}
-            accent="terracotta"
             hint={data && data.ungradedAssignments > 0 ? "Segera nilai agar peserta dapat feedback" : undefined}
           />
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
-            <h2 className="font-heading text-lg text-ink">Kelas Saya</h2>
+            <h2 className="font-heading text-lg text-foreground">Kelas Saya</h2>
             <div className="mt-3 flex flex-col gap-3">
               {loading ? (
-                <p className="text-sm text-ink-soft">Memuat...</p>
+                <p className="text-sm text-muted-foreground">Memuat...</p>
               ) : data && data.courses.length > 0 ? (
                 data.courses.map((course) => (
-                  <Card key={course.id} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-ink">{course.title}</span>
-                    <span className="text-xs capitalize text-ink-soft">{course.status}</span>
+                  <Card key={course.id} className="flex items-center justify-between px-5">
+                    <span className="text-sm font-medium text-foreground">{course.title}</span>
+                    <span className="text-xs capitalize text-muted-foreground">{course.status}</span>
                   </Card>
                 ))
               ) : (
@@ -49,15 +49,15 @@ export default function InstrukturDashboardPage() {
           </div>
 
           <div>
-            <h2 className="font-heading text-lg text-ink">Jadwal Sesi Terdekat</h2>
+            <h2 className="font-heading text-lg text-foreground">Jadwal Sesi Terdekat</h2>
             <div className="mt-3 flex flex-col gap-3">
               {loading ? (
-                <p className="text-sm text-ink-soft">Memuat...</p>
+                <p className="text-sm text-muted-foreground">Memuat...</p>
               ) : data && data.upcomingSchedules.length > 0 ? (
                 data.upcomingSchedules.map((s) => (
-                  <Card key={s.id} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-ink">{s.title}</span>
-                    <span className="text-xs text-ink-soft">
+                  <Card key={s.id} className="flex items-center justify-between px-5">
+                    <span className="text-sm font-medium text-foreground">{s.title}</span>
+                    <span className="text-xs text-muted-foreground">
                       {new Date(s.start_time).toLocaleString("id-ID")}
                     </span>
                   </Card>

@@ -6,8 +6,8 @@ import { useAuth } from "@/lib/auth-context";
 import { useApi } from "@/lib/use-api";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
-import { Badge } from "@/components/ui/badge";
-import { EmptyState } from "@/components/ui/empty-state";
+import { StatusBadge } from "@/components/patterns/status-badge";
+import { EmptyState } from "@/components/patterns/empty-state";
 
 interface ScheduleItem {
   id: string;
@@ -44,7 +44,7 @@ export default function CalendarPage() {
   }, [data]);
 
   if (authLoading || !user) {
-    return <div className="flex flex-1 items-center justify-center text-ink-soft">Memuat...</div>;
+    return <div className="flex flex-1 items-center justify-center text-muted-foreground">Memuat...</div>;
   }
 
   return (
@@ -54,31 +54,29 @@ export default function CalendarPage() {
         <Topbar title="Kalender Kelas" subtitle="Sesi live dan deadline dalam satu tampilan." />
         <div className="flex flex-1 flex-col gap-6 p-6">
           {loading ? (
-            <p className="text-sm text-ink-soft">Memuat jadwal...</p>
+            <p className="text-sm text-muted-foreground">Memuat jadwal...</p>
           ) : grouped.length > 0 ? (
             grouped.map(([date, items]) => (
               <div key={date}>
-                <h2 className="font-heading text-base text-ink">{date}</h2>
+                <h2 className="font-heading text-base text-foreground">{date}</h2>
                 <div className="mt-2 flex flex-col gap-2">
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3"
+                      className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 shadow-card"
                     >
                       <div>
-                        <p className="text-sm font-medium text-ink">{item.title}</p>
-                        <p className="text-xs text-ink-soft">{item.course_title}</p>
+                        <p className="text-sm font-medium text-foreground">{item.title}</p>
+                        <p className="text-xs text-muted-foreground">{item.course_title}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-ink-soft">
+                        <span className="text-xs text-muted-foreground">
                           {new Date(item.start_time).toLocaleTimeString("id-ID", {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                         </span>
-                        <Badge tone={item.type === "session" ? "blue" : "terracotta"}>
-                          {item.type === "session" ? "Sesi Live" : "Deadline"}
-                        </Badge>
+                        <StatusBadge domain="schedule" value={item.type} />
                       </div>
                     </div>
                   ))}

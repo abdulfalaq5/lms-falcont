@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Topbar } from "@/components/layout/topbar";
 import { Card } from "@/components/ui/card";
-import { Badge, ENROLLMENT_STATUS_LABEL, ENROLLMENT_STATUS_TONE } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/patterns/status-badge";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
+import { EmptyState } from "@/components/patterns/empty-state";
 import { useApi } from "@/lib/use-api";
 import { apiFetch } from "@/lib/api";
 
@@ -37,17 +37,17 @@ export default function AdminEnrollmentsPage() {
       <Topbar title="Persetujuan Pendaftaran" subtitle="Tinjau pendaftaran kelas yang membutuhkan approval." />
       <div className="flex flex-1 flex-col gap-4 p-6">
         {loading ? (
-          <p className="text-sm text-ink-soft">Memuat...</p>
+          <p className="text-sm text-muted-foreground">Memuat...</p>
         ) : data && data.length > 0 ? (
           data.map((e) => (
-            <Card key={e.id} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <Card key={e.id} className="flex flex-col gap-3 px-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="font-medium text-ink">{e.user_name}</p>
-                <p className="text-xs text-ink-soft">{e.user_email}</p>
-                <p className="mt-1 text-sm text-ink-soft">Kelas: {e.course_title}</p>
+                <p className="font-medium text-foreground">{e.user_name}</p>
+                <p className="text-xs text-muted-foreground">{e.user_email}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Kelas: {e.course_title}</p>
               </div>
               <div className="flex items-center gap-2">
-                <Badge tone={ENROLLMENT_STATUS_TONE[e.status]}>{ENROLLMENT_STATUS_LABEL[e.status]}</Badge>
+                <StatusBadge domain="enrollment" value={e.status} />
                 <Button
                   variant="secondary"
                   disabled={processingId === e.id}

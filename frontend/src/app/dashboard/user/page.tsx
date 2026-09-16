@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { Topbar } from "@/components/layout/topbar";
 import { Card } from "@/components/ui/card";
-import { Badge, ENROLLMENT_STATUS_LABEL, ENROLLMENT_STATUS_TONE } from "@/components/ui/badge";
-import { EmptyState } from "@/components/ui/empty-state";
+import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/patterns/status-badge";
+import { EmptyState } from "@/components/patterns/empty-state";
 import { Button } from "@/components/ui/button";
 import { useApi } from "@/lib/use-api";
 import { useAuth } from "@/lib/auth-context";
@@ -30,15 +31,15 @@ export default function UserDashboardPage() {
       />
       <div className="flex flex-1 flex-col gap-8 p-6">
         <div>
-          <h2 className="font-heading text-lg text-ink">Kelas yang Diikuti</h2>
+          <h2 className="font-heading text-lg text-foreground">Kelas yang Diikuti</h2>
           <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {loading ? (
-              <p className="text-sm text-ink-soft">Memuat...</p>
+              <p className="text-sm text-muted-foreground">Memuat...</p>
             ) : data && data.enrollments.length > 0 ? (
               data.enrollments.map((e) => (
-                <Card key={e.id} className="flex flex-col gap-2">
-                  <span className="font-medium text-ink">{e.course_title}</span>
-                  <Badge tone={ENROLLMENT_STATUS_TONE[e.status]}>{ENROLLMENT_STATUS_LABEL[e.status]}</Badge>
+                <Card key={e.id} className="flex flex-col gap-2 px-5">
+                  <span className="font-medium text-foreground">{e.course_title}</span>
+                  <StatusBadge domain="enrollment" value={e.status} />
                 </Card>
               ))
             ) : (
@@ -48,7 +49,7 @@ export default function UserDashboardPage() {
                   description="Yuk mulai belajar dengan menjelajahi katalog kelas yang tersedia."
                   action={
                     <Link href="/courses">
-                      <Button variant="primary">Jelajahi Kelas</Button>
+                      <Button>Jelajahi Kelas</Button>
                     </Link>
                   }
                 />
@@ -59,15 +60,15 @@ export default function UserDashboardPage() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
-            <h2 className="font-heading text-lg text-ink">Deadline Terdekat</h2>
+            <h2 className="font-heading text-lg text-foreground">Deadline Terdekat</h2>
             <div className="mt-3 flex flex-col gap-3">
               {loading ? (
-                <p className="text-sm text-ink-soft">Memuat...</p>
+                <p className="text-sm text-muted-foreground">Memuat...</p>
               ) : data && data.upcomingDeadlines.length > 0 ? (
                 data.upcomingDeadlines.map((d) => (
-                  <Card key={d.id} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-ink">{d.title}</span>
-                    <span className="text-xs text-ink-soft">
+                  <Card key={d.id} className="flex items-center justify-between px-5">
+                    <span className="text-sm font-medium text-foreground">{d.title}</span>
+                    <span className="text-xs text-muted-foreground">
                       {new Date(d.start_time).toLocaleDateString("id-ID")}
                     </span>
                   </Card>
@@ -79,14 +80,14 @@ export default function UserDashboardPage() {
           </div>
 
           <div>
-            <h2 className="font-heading text-lg text-ink">Sertifikat & Nilai</h2>
+            <h2 className="font-heading text-lg text-foreground">Sertifikat & Nilai</h2>
             <div className="mt-3 flex flex-col gap-3">
               {loading ? (
-                <p className="text-sm text-ink-soft">Memuat...</p>
+                <p className="text-sm text-muted-foreground">Memuat...</p>
               ) : data && data.grades.length > 0 ? (
                 data.grades.map((g) => (
-                  <Card key={g.course_id} className="flex items-center justify-between">
-                    <span className="text-sm text-ink">
+                  <Card key={g.course_id} className="flex items-center justify-between px-5">
+                    <span className="text-sm text-foreground">
                       Nilai Akhir: {g.final_score != null ? g.final_score : "Belum ada"}
                     </span>
                     {g.certificate_issued ? (
@@ -94,12 +95,12 @@ export default function UserDashboardPage() {
                         onClick={() =>
                           downloadFile(`/reports/certificate/${g.course_id}`, `sertifikat-${g.course_id}.pdf`)
                         }
-                        className="text-sm text-terracotta hover:underline"
+                        className="text-sm text-primary hover:underline"
                       >
                         Unduh Sertifikat
                       </button>
                     ) : (
-                      <Badge tone="neutral">Belum tersedia</Badge>
+                      <Badge variant="secondary">Belum tersedia</Badge>
                     )}
                   </Card>
                 ))
@@ -111,7 +112,7 @@ export default function UserDashboardPage() {
         </div>
 
         {activeCourses.length > 0 && (
-          <p className="text-sm text-ink-soft">
+          <p className="text-sm text-muted-foreground">
             Kamu sedang aktif di {activeCourses.length} kelas. Terus semangat belajar!
           </p>
         )}
