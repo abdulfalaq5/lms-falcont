@@ -11,7 +11,70 @@ lms-project/
 └── docker-compose.yml   # Postgres + pgAdmin + Mailhog
 ```
 
-## Menjalankan (mode: komponen di Docker, app native)
+Ada 3 cara menjalankan project ini, pilih salah satu:
+
+1. **Full tanpa Docker** — Postgres, backend, dan frontend semua dijalankan native di mesin kamu.
+2. **Komponen di Docker, app native** — Postgres/pgAdmin/Mailhog di Docker, backend & frontend native.
+3. **Full Docker** — semuanya (termasuk backend & frontend) jalan di container, cocok untuk deployment/staging.
+
+## Mode 1: Full tanpa Docker (semua native)
+
+Gunakan mode ini jika Postgres (dan SMTP server, opsional) sudah tersedia/terpasang sendiri di luar Docker.
+
+1. Siapkan database Postgres secara manual (lewat `psql`, TablePlus, dsb), sesuaikan dengan kredensial yang akan dipakai di `.env`, misalnya:
+   ```sql
+   CREATE USER lms_user WITH PASSWORD 'lms_password';
+   CREATE DATABASE lms_db OWNER lms_user;
+   ```
+
+2. Setup backend:
+   ```
+   cd backend
+   cp .env.example .env
+   ```
+   Edit `backend/.env` sesuai environment kamu, minimal:
+   ```
+   DB_HOST=localhost
+   DB_PORT=5432              # sesuaikan dengan port Postgres native kamu
+   DB_USER=lms_user
+   DB_PASSWORD=lms_password
+   DB_NAME=lms_db
+
+   SMTP_HOST=localhost       # ganti dengan host SMTP provider pihak ketiga jika ada
+   SMTP_PORT=1025
+   SMTP_USER=                # isi jika provider butuh autentikasi
+   SMTP_PASSWORD=
+   ```
+   > Jika belum punya SMTP server sendiri, email (reset password, dsb) tidak akan terkirim tapi aplikasi tetap jalan normal — cukup abaikan bagian SMTP untuk development.
+
+   Contoh pakai provider pihak ketiga seperti [Mailtrap](https://mailtrap.io) (sandbox, untuk testing email tanpa mengirim ke penerima asli):
+   ```
+   SMTP_HOST=sandbox.smtp.mailtrap.io
+   SMTP_PORT=2525
+   SMTP_USER=<username_mailtrap>
+   SMTP_PASSWORD=<password_mailtrap>
+   ```
+   Provider SMTP lain (Gmail, SendGrid, Amazon SES, dll) juga bisa dipakai dengan pola yang sama — cukup sesuaikan `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, dan `SMTP_PASSWORD` sesuai kredensial dari provider tersebut.
+
+   Lalu jalankan:
+   ```
+   npm install
+   npm run migrate:latest
+   npm run seed:run
+   npm run start:dev
+   ```
+   Backend jalan di `http://localhost:3001`, dokumentasi API di `http://localhost:3001/api/docs`.
+
+3. Setup frontend:
+   ```
+   cd frontend
+   cp .env.local.example .env.local
+   npm install
+   npm run dev
+   ```
+   Frontend jalan di `http://localhost:3000` (atau port lain jika 3000 terpakai).
+
+## Mode 2: Komponen di Docker, app native
 
 1. Jalankan komponen pendukung:
    ```
@@ -39,7 +102,7 @@ lms-project/
    ```
    Frontend jalan di `http://localhost:3000` (atau port lain jika 3000 terpakai).
 
-## Menjalankan (mode: full Docker — backend & frontend juga di container)
+## Mode 3: Full Docker — backend & frontend juga di container
 
 Cocok untuk deployment/staging. Jika stack mode "komponen saja" (di atas) sedang jalan, matikan dulu (`docker compose down`) karena keduanya memakai port pgAdmin/Mailhog yang sama.
 
